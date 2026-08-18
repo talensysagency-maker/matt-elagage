@@ -1,0 +1,42 @@
+DOSSIER DES PHOTOS
+==================
+
+Pour l'instant, le site affiche des photos de démonstration prises sur la
+banque d'images Unsplash (elles se chargent depuis Internet).
+
+Pour mettre les vraies photos du client :
+
+1. Déposez les fichiers dans ce dossier en respectant ces noms :
+
+   hero.jpg                     la grande photo du haut (paysage, 1600 px de large)
+   service-creation-jardin.jpg  carte "Création de jardin"
+   service-terrasse-bois.jpg    carte "Terrasse en bois"
+   service-cloture.jpg          carte "Clôture & portail"
+   service-entretien.jpg        carte "Entretien de jardin"
+
+   realisation-1-avant.jpg      galerie : chantier 1, avant travaux
+   realisation-1-apres.jpg      galerie : chantier 1, après travaux
+   realisation-2-avant.jpg
+   realisation-2-apres.jpg
+   realisation-3-avant.jpg
+   realisation-3-apres.jpg
+   realisation-4-avant.jpg
+   realisation-4-apres.jpg
+   realisation-5-avant.jpg
+   realisation-5-apres.jpg
+   realisation-6-avant.jpg
+   realisation-6-apres.jpg
+
+2. Ouvrez js/config.js et remplacez chaque adresse Internet
+   "https://images.unsplash.com/photo-..." par le chemin du fichier local,
+   par exemple :  "images/hero.jpg"
+
+CONSEILS
+--------
+- Largeur idéale : 1600 px. Au-delà, le site devient lent pour rien.
+- Poids : moins de 300 Ko par photo. Pour compresser gratuitement :
+  https://squoosh.app (glissez la photo, réglez la qualité vers 70 %).
+- Cadrez les "avant / après" depuis le même angle : l'effet est bien plus
+  vendeur.
+- N'oubliez pas de mettre à jour le texte "imageAlt" dans config.js :
+  il décrit la photo pour Google et pour les personnes malvoyantes.

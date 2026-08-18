@@ -1,0 +1,737 @@
+/* ==========================================================================
+   PAYSAGES LE GUEN — feuille de style unique
+   --------------------------------------------------------------------------
+   ▼▼▼ TOUT CE QUI CHANGE D'UN CLIENT À L'AUTRE EST DANS LE BLOC CI-DESSOUS ▼▼▼
+   ========================================================================== */
+
+:root {
+
+  /* --- COULEURS ---------------------------------------------------------- */
+  --vert:            #2E5B3E;   /* couleur principale : titres, boutons, header */
+  --vert-clair:      #3E7A52;   /* survol des boutons verts */
+  --vert-tres-clair: #EAF1E8;   /* fonds de blocs légers, puces */
+  --terre:           #A34A12;   /* couleur d'accent : bouton "Devis", liens */
+  --terre-clair:     #C2601F;   /* survol du bouton d'accent */
+  --or:              #C9860A;   /* étoiles des avis */
+
+  --sable:           #FBF7F0;   /* fond général de la page */
+  --sable-fonce:     #F2EADC;   /* fond des sections alternées */
+  --blanc:           #FFFFFF;   /* fond des cartes */
+  --texte:           #1F2A1C;   /* texte courant */
+  --texte-doux:      #55604F;   /* texte secondaire */
+  --bordure:         #E3DACA;   /* filets et contours de cartes */
+
+  /* --- POLICES ----------------------------------------------------------- */
+  /* Si vous changez de police, pensez au lien Google Fonts dans index.html */
+  --police-titres: "Lora", Georgia, "Times New Roman", serif;
+  --police-texte:  "Raleway", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --taille-base:   1.0625rem;   /* 17px : taille du texte courant */
+
+  /* --- ARRONDIS & OMBRES ------------------------------------------------- */
+  --rayon:        16px;         /* arrondi des cartes et des images */
+  --rayon-petit:  10px;         /* arrondi des boutons et des champs */
+  --rayon-pilule: 999px;        /* puces et badges */
+  --ombre:        0 1px 2px rgba(31, 42, 28, .05), 0 8px 24px rgba(31, 42, 28, .07);
+  --ombre-forte:  0 4px 12px rgba(31, 42, 28, .10), 0 18px 40px rgba(31, 42, 28, .13);
+
+  /* --- ESPACEMENTS ------------------------------------------------------- */
+  --largeur-max:  1140px;       /* largeur maximale du contenu */
+  --section-y:    clamp(3.5rem, 9vw, 6rem);   /* hauteur des marges de section */
+}
+
+/* ▲▲▲ FIN DU BLOC À PERSONNALISER — le reste n'a pas besoin d'être modifié ▲▲▲ */
+
+
+/* ==========================================================================
+   1. BASE
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--sable);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: var(--taille-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--terre); }
+a:hover { color: var(--terre-clair); }
+
+h1, h2, h3 {
+  font-family: var(--police-titres);
+  line-height: 1.15;
+  color: var(--vert);
+  margin: 0 0 .6em;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
+h1 { font-size: clamp(2.1rem, 8.5vw, 3.5rem); }
+h2 { font-size: clamp(1.75rem, 5.5vw, 2.5rem); }
+h3 { font-size: clamp(1.15rem, 3.5vw, 1.35rem); }
+p  { margin: 0 0 1em; }
+
+/* Accessibilité : contour de focus visible au clavier, invisible à la souris */
+:focus-visible {
+  outline: 3px solid var(--terre);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.lien-evitement {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--vert);
+  color: #fff;
+  padding: .8rem 1.2rem;
+  z-index: 200;
+}
+.lien-evitement:focus { left: .5rem; top: .5rem; color: #fff; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.sprite-icones { display: none; }
+
+
+/* ==========================================================================
+   2. STRUCTURE COMMUNE
+   ========================================================================== */
+
+.conteneur {
+  width: 100%;
+  max-width: var(--largeur-max);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.section { padding-block: var(--section-y); scroll-margin-top: 4.5rem; }
+.section--sable { background: var(--sable-fonce); }
+.section--vert  { background: var(--vert); color: #fff; }
+.section--vert h2, .section--vert h3 { color: #fff; }
+
+.entete-section { max-width: 44rem; margin-bottom: clamp(2rem, 5vw, 3rem); }
+.entete-section.centre { margin-inline: auto; text-align: center; }
+
+.surtitre {
+  display: block;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--terre);
+  margin-bottom: .75rem;
+}
+.section--vert .surtitre { color: #C7DDBE; }
+
+.chapeau { color: var(--texte-doux); font-size: 1.075rem; margin-bottom: 0; }
+.section--vert .chapeau { color: #DCE9D6; }
+
+.icone { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.icone--pleine { fill: currentColor; stroke: none; }
+
+
+/* ==========================================================================
+   3. BOUTONS
+   ========================================================================== */
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  min-height: 3rem;
+  padding: .8rem 1.4rem;
+  border: 2px solid transparent;
+  border-radius: var(--rayon-petit);
+  font-family: var(--police-texte);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.bouton:hover { transform: translateY(-2px); }
+.bouton:active { transform: translateY(0); }
+
+.bouton--principal { background: var(--terre); color: #fff; box-shadow: var(--ombre); }
+.bouton--principal:hover { background: var(--terre-clair); color: #fff; }
+
+.bouton--vert { background: var(--vert); color: #fff; box-shadow: var(--ombre); }
+.bouton--vert:hover { background: var(--vert-clair); color: #fff; }
+
+.bouton--contour { background: rgba(255,255,255,.92); color: var(--vert); border-color: var(--vert); }
+.bouton--contour:hover { background: #fff; color: var(--vert-clair); border-color: var(--vert-clair); }
+
+.bouton--blanc { background: #fff; color: var(--vert); }
+.bouton--blanc:hover { background: var(--vert-tres-clair); color: var(--vert); }
+
+.bouton--large { width: 100%; }
+
+
+/* ==========================================================================
+   4. HEADER STICKY
+   ========================================================================== */
+
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(251, 247, 240, .96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--bordure);
+}
+
+.entete__barre {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 4.25rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-right: auto;
+  color: var(--vert);
+  text-decoration: none;
+  font-family: var(--police-titres);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.logo:hover { color: var(--vert-clair); }
+.logo .icone { width: 1.7rem; height: 1.7rem; color: var(--vert-clair); }
+.logo__texte { display: flex; flex-direction: column; }
+.logo__sous { font-family: var(--police-texte); font-size: .66rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-doux); white-space: nowrap; }
+.logo__ville { display: none; }   /* affichée à partir de la tablette */
+
+/* Téléphone du header */
+.entete__tel {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  justify-content: center;
+  padding: .35rem .75rem;
+  border-radius: var(--rayon-petit);
+  color: var(--vert);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.entete__tel:hover { background: var(--vert-tres-clair); color: var(--vert); }
+.entete__tel-texte { display: none; }
+
+.entete .bouton { min-height: 2.75rem; padding: .55rem 1rem; font-size: .95rem; }
+.entete__cta { display: none; }
+
+/* Menu de navigation */
+.burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-petit);
+  background: var(--blanc);
+  color: var(--vert);
+  cursor: pointer;
+}
+.burger .icone { width: 1.35rem; height: 1.35rem; }
+.burger__fermer { display: none; }
+.burger[aria-expanded="true"] .burger__ouvrir { display: none; }
+.burger[aria-expanded="true"] .burger__fermer { display: block; }
+
+.nav {
+  display: none;
+  border-top: 1px solid var(--bordure);
+  padding-block: .5rem 1rem;
+}
+.nav.ouvert { display: block; }
+.nav__liste { list-style: none; margin: 0; padding: 0; }
+.nav__liste a {
+  display: block;
+  padding: .7rem .25rem;
+  color: var(--texte);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--bordure);
+}
+.nav__liste a:hover { color: var(--terre); }
+.nav__liste li:last-child a { border-bottom: 0; }
+
+
+/* ==========================================================================
+   5. HERO
+   ========================================================================== */
+
+.hero { position: relative; isolation: isolate; color: #fff; }
+
+.hero__media { position: absolute; inset: 0; z-index: -2; background: var(--vert); }
+.hero__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.hero::after {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(20,38,22,.62) 0%, rgba(20,38,22,.44) 45%, rgba(20,38,22,.74) 100%);
+}
+
+.hero__contenu {
+  padding-block: clamp(3.5rem, 13vw, 8rem);
+  max-width: 40rem;
+}
+.hero h1 { color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,.25); }
+.hero__surtitre {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: var(--rayon-pilule);
+  padding: .35rem .85rem;
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  margin-bottom: 1.25rem;
+}
+.hero__sous {
+  font-size: 1.125rem;
+  color: #F2F6EF;
+  margin-bottom: 2rem;
+  max-width: 34rem;
+}
+.hero__boutons { display: flex; flex-direction: column; gap: .75rem; }
+.hero__note {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.75rem;
+  font-size: .9rem;
+  color: #EAF1E8;
+}
+.hero__note .icone { width: 1.05rem; height: 1.05rem; color: #FFC44D; }
+
+
+/* ==========================================================================
+   6. BANDEAU DE RÉASSURANCE
+   ========================================================================== */
+
+.reassurance { background: var(--vert); color: #fff; }
+.reassurance__liste {
+  list-style: none;
+  margin: 0; padding-block: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+.reassurance__item { display: flex; gap: .9rem; align-items: flex-start; }
+.reassurance__item .icone { width: 1.75rem; height: 1.75rem; color: #A8CF9C; margin-top: .15rem; }
+.reassurance__item strong { display: block; font-size: 1.02rem; }
+.reassurance__item span { display: block; font-size: .92rem; color: #D6E5D0; line-height: 1.5; }
+
+
+/* ==========================================================================
+   7. SERVICES
+   ========================================================================== */
+
+.grille-services { display: grid; gap: 1.5rem; }
+
+.carte-service {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  overflow: hidden;
+  box-shadow: var(--ombre);
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.carte-service:hover { transform: translateY(-4px); box-shadow: var(--ombre-forte); }
+.carte-service__image { aspect-ratio: 16 / 10; width: 100%; object-fit: cover; background: var(--vert-tres-clair); }
+.carte-service__corps { padding: 1.35rem 1.35rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.carte-service__corps p { color: var(--texte-doux); font-size: .98rem; }
+.carte-service__lien {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+}
+.carte-service__lien .icone { width: 1.1rem; height: 1.1rem; transition: transform .18s ease; }
+.carte-service__lien:hover .icone { transform: translateX(3px); }
+
+
+/* ==========================================================================
+   8. RÉALISATIONS (avant / après)
+   ========================================================================== */
+
+.grille-realisations { display: grid; gap: 1.25rem; }
+
+.realisation {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  overflow: hidden;
+  background: var(--blanc);
+  box-shadow: var(--ombre);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.realisation__cadre { display: block; position: relative; aspect-ratio: 4 / 3; background: var(--vert-tres-clair); }
+.realisation__cadre img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.realisation__apres { opacity: 1; transition: opacity .45s ease; }
+
+/* Survol sur ordinateur, clic/appui sur mobile → on montre la photo "avant" */
+@media (hover: hover) {
+  .realisation:hover .realisation__apres { opacity: 0; }
+}
+.realisation.montre-avant .realisation__apres { opacity: 0; }
+
+.realisation__badge {
+  position: absolute;
+  top: .75rem; left: .75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  background: rgba(46, 91, 62, .92);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  padding: .3rem .7rem;
+  border-radius: var(--rayon-pilule);
+}
+.realisation__badge--avant { background: rgba(163, 74, 18, .94); display: none; }
+
+/* Le badge suit la photo affichée : « Après » au repos, « Avant » au survol/appui */
+@media (hover: hover) {
+  .realisation:hover .realisation__badge--apres { display: none; }
+  .realisation:hover .realisation__badge--avant { display: inline-flex; }
+}
+.realisation.montre-avant .realisation__badge--apres { display: none; }
+.realisation.montre-avant .realisation__badge--avant { display: inline-flex; }
+
+.realisation__legende {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  padding: .9rem 1.1rem 1.05rem;
+  border-top: 1px solid var(--bordure);
+}
+.realisation__legende strong { font-family: var(--police-titres); font-size: 1.05rem; color: var(--vert); }
+.realisation__legende span { font-size: .88rem; color: var(--texte-doux); }
+
+.astuce {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.5rem;
+  font-size: .9rem;
+  color: var(--texte-doux);
+}
+.astuce .icone { width: 1.1rem; height: 1.1rem; color: var(--terre); }
+
+
+/* ==========================================================================
+   9. AVIS CLIENTS
+   ========================================================================== */
+
+.grille-avis { display: grid; gap: 1.25rem; }
+
+.avis {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 1.6rem 1.5rem;
+  box-shadow: var(--ombre);
+  display: flex;
+  flex-direction: column;
+}
+.avis__etoiles { display: flex; gap: .15rem; color: var(--or); margin-bottom: .9rem; }
+.avis__etoiles .icone { width: 1.15rem; height: 1.15rem; }
+.avis blockquote { margin: 0 0 1.2rem; font-size: 1.04rem; }
+.avis blockquote::before { content: "« "; }
+.avis blockquote::after  { content: " »"; }
+.avis__auteur { margin-top: auto; font-size: .92rem; }
+.avis__auteur strong { display: block; color: var(--vert); font-size: 1rem; }
+.avis__auteur span { color: var(--texte-doux); }
+
+
+/* ==========================================================================
+   10. ZONE D'INTERVENTION
+   ========================================================================== */
+
+.zone__grille { display: grid; gap: 2.5rem; }
+
+.communes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.communes li {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: var(--rayon-pilule);
+  padding: .35rem .85rem;
+  font-size: .92rem;
+}
+.communes .icone { width: .95rem; height: .95rem; color: #A8CF9C; }
+
+.encart-zone {
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: var(--rayon);
+  padding: 1.5rem;
+}
+.encart-zone p:last-child { margin-bottom: 0; }
+.encart-zone strong { color: #fff; }
+.encart-zone .bouton { margin-top: .5rem; }
+
+
+/* ==========================================================================
+   11. FORMULAIRE
+   ========================================================================== */
+
+.bloc-contact { display: grid; gap: 2.5rem; }
+
+.formulaire {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 1.5rem;
+  box-shadow: var(--ombre);
+}
+.champ { margin-bottom: 1.1rem; }
+.champ label { display: block; font-weight: 600; font-size: .95rem; margin-bottom: .35rem; }
+.champ .requis { color: var(--terre); }
+
+.champ input,
+.champ select,
+.champ textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: .7rem .85rem;
+  border: 1.5px solid var(--bordure);
+  border-radius: var(--rayon-petit);
+  background: var(--sable);
+  color: var(--texte);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.champ textarea { min-height: 7rem; resize: vertical; }
+.champ select { appearance: none; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2355604F' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .8rem center; background-size: 1.15rem; padding-right: 2.6rem; }
+.champ input:focus, .champ select:focus, .champ textarea:focus {
+  outline: none;
+  border-color: var(--vert-clair);
+  box-shadow: 0 0 0 3px rgba(62, 122, 82, .18);
+}
+.champ input[aria-invalid="true"], .champ select[aria-invalid="true"], .champ textarea[aria-invalid="true"] {
+  border-color: #B3261E;
+  background: #FEF6F5;
+}
+.champ__erreur { display: none; margin-top: .3rem; font-size: .87rem; font-weight: 600; color: #B3261E; }
+.champ__erreur.visible { display: block; }
+
+.champ--case { display: flex; gap: .7rem; align-items: flex-start; }
+.champ--case input { width: 1.35rem; height: 1.35rem; min-height: 0; flex: none; margin-top: .15rem; accent-color: var(--vert); }
+.champ--case label { font-weight: 500; font-size: .9rem; color: var(--texte-doux); margin: 0; }
+
+.pot-de-miel { position: absolute; left: -9999px; }
+
+.message-formulaire {
+  display: none;
+  align-items: flex-start;
+  gap: .6rem;
+  margin-bottom: 1.2rem;
+  padding: .9rem 1rem;
+  border-radius: var(--rayon-petit);
+  font-weight: 600;
+  font-size: .96rem;
+}
+.message-formulaire.visible { display: flex; }
+.message-formulaire--succes { background: var(--vert-tres-clair); color: #1E4A2B; border: 1px solid #B9D3AE; }
+.message-formulaire--erreur { background: #FDEDEB; color: #8C1D18; border: 1px solid #F3C4BE; }
+.message-formulaire .icone { width: 1.25rem; height: 1.25rem; margin-top: .1rem; }
+
+.note-formulaire { font-size: .85rem; color: var(--texte-doux); margin: .9rem 0 0; }
+
+/* Colonne "coordonnées" à côté du formulaire */
+.coordonnees { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+.coordonnees li { display: flex; gap: .8rem; align-items: flex-start; }
+.coordonnees .icone { color: var(--vert-clair); margin-top: .2rem; }
+.coordonnees strong { display: block; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-doux); font-weight: 700; }
+.coordonnees a { color: var(--vert); font-weight: 700; text-decoration: none; font-size: 1.05rem; }
+.coordonnees a:hover { color: var(--terre); text-decoration: underline; }
+
+
+/* ==========================================================================
+   12. FOOTER
+   ========================================================================== */
+
+.pied {
+  background: #16301D;
+  color: #D6E0D1;
+  padding-block: 3rem 7rem;   /* la marge basse laisse la place au bouton d'appel flottant */
+  font-size: .94rem;
+}
+.pied a { color: #fff; }
+.pied__grille { display: grid; gap: 2rem; }
+.pied h3 { color: #fff; font-size: 1.05rem; margin-bottom: .7rem; }
+.pied ul { list-style: none; margin: 0; padding: 0; }
+.pied li { margin-bottom: .35rem; }
+.pied .logo { color: #fff; margin-bottom: .8rem; }
+.pied .logo .icone { color: #A8CF9C; }
+.pied .logo__sous { color: #A9B8A4; }
+.pied__mentions {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,.15);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.25rem;
+  align-items: center;
+  font-size: .85rem;
+  color: #A9B8A4;
+}
+.pied__mentions a { color: #D6E0D1; }
+.pied__legal { font-size: .82rem; color: #93A38E; margin-top: .75rem; line-height: 1.6; }
+
+
+/* ==========================================================================
+   13. BOUTON FLOTTANT « APPELER » (mobile uniquement)
+   ========================================================================== */
+
+.appel-flottant {
+  position: fixed;
+  left: 1rem; right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 90;
+  box-shadow: var(--ombre-forte);
+  font-size: 1.05rem;
+  transition: transform .25s ease, opacity .25s ease, visibility .25s;
+}
+/* on l'efface quand le formulaire est à l'écran : il masquerait les champs */
+.appel-flottant.masque { opacity: 0; visibility: hidden; transform: translateY(150%); }
+
+
+/* ==========================================================================
+   13 bis. PAGES SECONDAIRES (politique de confidentialité, mentions…)
+   ========================================================================== */
+
+.page-texte { max-width: 46rem; margin-inline: auto; }
+.page-texte h1 { font-size: clamp(1.9rem, 6vw, 2.6rem); }
+.page-texte h2 { font-size: clamp(1.25rem, 4vw, 1.5rem); margin-top: 2.5rem; }
+.page-texte ul { padding-left: 1.2rem; }
+.page-texte li { margin-bottom: .4rem; }
+.page-texte .maj { color: var(--texte-doux); font-size: .9rem; }
+.retour {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.retour .icone { width: 1.1rem; height: 1.1rem; transform: rotate(180deg); }
+
+
+/* ==========================================================================
+   14. ANIMATIONS AU DÉFILEMENT
+   ========================================================================== */
+
+.anim { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+.anim.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .anim { opacity: 1; transform: none; transition: none; }
+  .bouton:hover, .carte-service:hover { transform: none; }
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+
+/* ==========================================================================
+   15. TABLETTE (à partir de 640 px)
+   ========================================================================== */
+
+@media (min-width: 40rem) {
+  .hero__boutons { flex-direction: row; flex-wrap: wrap; }
+  .hero__boutons .bouton { flex: 0 0 auto; }
+  .reassurance__liste { grid-template-columns: repeat(2, 1fr); gap: 1.75rem 2rem; }
+  .grille-services { grid-template-columns: repeat(2, 1fr); }
+  .grille-realisations { grid-template-columns: repeat(2, 1fr); }
+  .grille-avis { grid-template-columns: repeat(2, 1fr); }
+  .pied__grille { grid-template-columns: repeat(2, 1fr); }
+  .formulaire { padding: 2rem; }
+  .entete__tel-texte { display: inline; }
+  .logo__ville { display: inline; }
+}
+
+
+/* ==========================================================================
+   16. ORDINATEUR (à partir de 900 px)
+   ========================================================================== */
+
+@media (min-width: 56.25rem) {
+  :root { --taille-base: 1.09375rem; }  /* 17.5px */
+
+  body { padding-bottom: 0; }
+  .appel-flottant { display: none; }     /* le téléphone reste dans le header */
+
+  .burger { display: none; }
+  .entete__cta { display: inline-flex; }
+  .entete__barre { min-height: 4.75rem; gap: 1rem; }
+
+  .nav {
+    display: block;
+    border: 0;
+    padding: 0;
+    margin-right: 1rem;
+  }
+  .nav__liste { display: flex; gap: .35rem; }
+  .nav__liste a {
+    border: 0;
+    padding: .5rem .7rem;
+    font-size: .96rem;
+    border-radius: var(--rayon-petit);
+  }
+  .nav__liste a:hover { background: var(--vert-tres-clair); color: var(--vert); }
+
+  .reassurance__liste { grid-template-columns: repeat(4, 1fr); padding-block: 2.5rem; }
+  .grille-services { grid-template-columns: repeat(4, 1fr); gap: 1.75rem; }
+  .grille-realisations { grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .grille-avis { grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .zone__grille { grid-template-columns: 1.35fr 1fr; gap: 3.5rem; align-items: start; }
+  .bloc-contact { grid-template-columns: 1fr 1.15fr; gap: 4rem; align-items: start; }
+  .pied__grille { grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; }
+
+  .ligne-champs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.25rem; }
+  .hero__contenu { padding-block: clamp(6rem, 11vw, 9.5rem); }
+}
