@@ -234,7 +234,38 @@ Envoyez le contenu du dossier (et non le dossier lui-même) dans le répertoire
 
 ---
 
-## 4. Vérifications avant de livrer
+## 4. Vérifier le rendu mobile sans avoir de téléphone sous la main
+
+Le site est pensé pour être montré d'abord sur un écran de téléphone. Vous
+pouvez contrôler ce rendu depuis ce seul ordinateur :
+
+1. Ouvrez `index.html` dans Chrome (ou Edge).
+2. Appuyez sur **F12**, puis sur **Ctrl + Maj + M** (icône « téléphone/tablette »).
+3. En haut de la fenêtre, choisissez un appareil dans la liste déroulante :
+   *iPhone 14 Pro*, *Galaxy S20*, ou saisissez `375 × 812` à la main.
+4. Rechargez avec **Ctrl + F5** : le site bascule en mode tactile
+   (menu burger, bouton d'appel flottant, cartes avant/après à l'appui).
+
+Points à regarder dans ce mode :
+
+- le bouton orange **Appeler** reste collé en bas de l'écran… sauf quand le
+  formulaire est affiché, où il s'efface pour ne pas masquer les champs
+  (le téléphone reste alors accessible en haut, dans le bandeau fixe) ;
+- l'en-tête n'affiche que « Paysages Le Guen / ARTISAN PAYSAGISTE » pour
+  rester sur une seule ligne ;
+- les six réalisations basculent en « Avant » au premier appui, et reviennent
+  en « Après » au second.
+
+Ce rendu a été vérifié en 320, 375, 390, 768 et 1280 px de large : aucun
+débordement horizontal, aucun texte tronqué.
+
+> Pour le voir un jour sur un vrai téléphone sans matériel supplémentaire :
+> déposez le dossier sur [app.netlify.com/drop](https://app.netlify.com/drop)
+> (section 3 ci-dessus), l'adresse obtenue s'ouvre depuis n'importe quel mobile.
+
+---
+
+## 5. Vérifications avant de livrer
 
 - [ ] Le nom de l'entreprise, le téléphone et l'e-mail sont corrects **partout**
       (haut de page, formulaire, pied de page, bouton flottant du mobile).
@@ -248,7 +279,7 @@ Envoyez le contenu du dossier (et non le dossier lui-même) dans le répertoire
 
 ---
 
-## 5. En cas de problème
+## 6. En cas de problème
 
 | Symptôme | Cause la plus fréquente | Solution |
 |---|---|---|
@@ -260,7 +291,7 @@ Envoyez le contenu du dossier (et non le dossier lui-même) dans le répertoire
 
 ---
 
-## 6. Réutiliser ce site pour un autre métier
+## 7. Réutiliser ce site pour un autre métier
 
 Le modèle est volontairement générique. Pour un maçon, un menuisier ou un
 plombier :

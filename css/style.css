@@ -723,6 +723,7 @@ p  { margin: 0 0 1em; }
     border-radius: var(--rayon-petit);
   }
   .nav__liste a:hover { background: var(--vert-tres-clair); color: var(--vert); }
+  .nav__liste a { white-space: nowrap; }
 
   .reassurance__liste { grid-template-columns: repeat(4, 1fr); padding-block: 2.5rem; }
   .grille-services { grid-template-columns: repeat(4, 1fr); gap: 1.75rem; }
