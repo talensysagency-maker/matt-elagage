@@ -72,7 +72,7 @@ window.CONFIG = {
     { icone: "devis",      titre: "Devis gratuit",          texte: "Déplacement et chiffrage sur place, sans engagement." },
     { icone: "local",      titre: "Artisan local",          texte: "Basé à Brech, j'interviens à Auray et dans les communes alentour." },
     { icone: "experience", titre: "Chantier laissé propre", texte: "Nettoyage et enlèvement des déchets verts compris." },
-    { icone: "garantie",   titre: "Entreprise déclarée",    texte: "SIRET 988 096 467 00010 — devis et factures en règle." }
+    { icone: "garantie",   titre: "Entreprise déclarée",    texte: "Artisan immatriculé, devis et factures en règle." }
   ],
 
   /* ---------------------------------------------------------------------- */
