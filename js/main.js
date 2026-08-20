@@ -16,6 +16,8 @@
   /* ---------------------------------------------------------------- outils */
 
   // Lit une valeur dans la config : val("entreprise.ville")
+  // ou val("entreprise.horairesGoogle.jours", []) pour un objet imbriqué,
+  // avec une valeur de secours si le chemin n'existe pas.
   function val(chemin, defaut) {
     var v = chemin.split(".").reduce(function (o, k) {
       return (o && o[k] !== undefined && o[k] !== null) ? o[k] : undefined;
@@ -65,17 +67,19 @@
       if (v !== null && v !== "") n.textContent = v;
     });
 
-    var tel = lienTel(val("entreprise.telephone"));
+    // Tant que le téléphone ou l'e-mail ne sont pas renseignés ([À COMPLÉTER]),
+    // les liens mènent au formulaire plutôt que vers un lien mort.
+    var numero = val("entreprise.telephone");
+    var telOk = String(numero).replace(/\D/g, "").length >= 6;
     document.querySelectorAll("[data-tel]").forEach(function (a) {
-      a.setAttribute("href", tel);
+      a.setAttribute("href", telOk ? lienTel(numero) : "#contact");
     });
 
     var mail = val("entreprise.email");
-    if (mail) {
-      document.querySelectorAll("[data-mail]").forEach(function (a) {
-        a.setAttribute("href", "mailto:" + mail);
-      });
-    }
+    var mailOk = String(mail).indexOf("@") > 0;
+    document.querySelectorAll("[data-mail]").forEach(function (a) {
+      a.setAttribute("href", mailOk ? "mailto:" + mail : "#contact");
+    });
 
     var annee = el("annee");
     if (annee) annee.textContent = new Date().getFullYear();
@@ -170,16 +174,95 @@
     });
   }
 
+  // Carrousel d'avis : une seule citation à l'écran, flèches + pastilles,
+  // défilement automatique qui s'arrête dès que le visiteur interagit.
   function injecterAvis() {
-    var c = el("liste-avis");
-    if (!c) return;
-    c.innerHTML = val("avis", []).map(function (a) {
-      return '<figure class="avis anim">' +
-               '<div class="avis__etoiles" role="img" aria-label="' + esc((a.note || 5) + " étoiles sur 5") + '">' + etoiles(a.note) + '</div>' +
-               '<blockquote>' + esc(a.texte) + '</blockquote>' +
-               '<figcaption class="avis__auteur"><strong>' + esc(a.nom) + '</strong><span>' + esc(a.ville) + '</span></figcaption>' +
+    var piste = el("liste-avis");
+    var nav = el("nav-avis");
+    var liste = val("avis", []);
+    if (!piste || !liste.length) return;
+
+    piste.innerHTML = liste.map(function (a, i) {
+      return '<figure class="avis-slide' + (i === 0 ? ' actif' : '') + '"' +
+               (i === 0 ? '' : ' aria-hidden="true"') + '>' +
+               '<div class="avis-slide__etoiles" role="img" aria-label="' +
+                 esc((a.note || 5) + " étoiles sur 5") + '">' + etoiles(a.note) + '</div>' +
+               '<blockquote>« ' + esc(a.texte) + ' »</blockquote>' +
+               '<figcaption>' +
+                 '<span class="avis-slide__nom">' + esc(a.nom) + '</span>' +
+                 (a.source ? '<span class="avis-slide__source">' + esc(a.source) + '</span>' : '') +
+               '</figcaption>' +
              '</figure>';
     }).join("");
+
+    var slides = piste.querySelectorAll(".avis-slide");
+    if (!nav || slides.length < 2) return;
+
+    nav.innerHTML =
+      '<button class="carrousel-avis__fleche carrousel-avis__fleche--precedent" type="button" data-pas="-1">' +
+        '<svg class="icone" aria-hidden="true"><use href="#i-fleche"></use></svg>' +
+        '<span class="sr-only">Avis précédent</span></button>' +
+      '<div class="carrousel-avis__points">' +
+        liste.map(function (a, i) {
+          return '<button class="carrousel-avis__point" type="button" data-index="' + i + '"' +
+                 (i === 0 ? ' aria-current="true"' : '') +
+                 '><span class="sr-only">Avis ' + (i + 1) + '</span></button>';
+        }).join("") +
+      '</div>' +
+      '<button class="carrousel-avis__fleche" type="button" data-pas="1">' +
+        '<svg class="icone" aria-hidden="true"><use href="#i-fleche"></use></svg>' +
+        '<span class="sr-only">Avis suivant</span></button>';
+
+    var index = 0;
+    var points = nav.querySelectorAll(".carrousel-avis__point");
+
+    function afficher(n) {
+      index = (n + slides.length) % slides.length;
+      slides.forEach(function (s, i) {
+        s.classList.toggle("actif", i === index);
+        if (i === index) s.removeAttribute("aria-hidden");
+        else s.setAttribute("aria-hidden", "true");
+      });
+      points.forEach(function (p, i) {
+        if (i === index) p.setAttribute("aria-current", "true");
+        else p.removeAttribute("aria-current");
+      });
+    }
+
+    var minuteur = null;
+    function arreter() { if (minuteur) { clearInterval(minuteur); minuteur = null; } }
+    function demarrer() {
+      if (minuteur || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      minuteur = setInterval(function () { afficher(index + 1); }, 7000);
+    }
+
+    nav.addEventListener("click", function (e) {
+      var bouton = e.target.closest("button");
+      if (!bouton) return;
+      arreter();   // le visiteur prend la main : plus de défilement automatique
+      if (bouton.dataset.pas) afficher(index + Number(bouton.dataset.pas));
+      else if (bouton.dataset.index) afficher(Number(bouton.dataset.index));
+      else afficher(0);
+    });
+
+    var zone = piste.closest(".carrousel-avis") || piste;
+    zone.addEventListener("mouseenter", arreter);
+    zone.addEventListener("mouseleave", demarrer);
+    zone.addEventListener("focusin", arreter);
+
+    demarrer();
+  }
+
+  // Note globale Google affichée sous le titre de la section
+  function injecterNoteAvis() {
+    var n = el("avis-note");
+    if (!n || !val("avisGoogle.note")) return;
+    var lien = val("avisGoogle.lien");
+    n.innerHTML =
+      '<strong>' + esc(val("avisGoogle.note")) + '</strong>' +
+      '<span class="etoiles" role="img" aria-label="Note de ' + esc(val("avisGoogle.note")) + ' sur 5">' + etoiles(5) + '</span>' +
+      '<span>' + esc(val("avisGoogle.nombre")) + ' avis Google</span>' +
+      (lien ? '<a href="' + esc(lien) + '" target="_blank" rel="noopener">Les lire sur Google</a>' : '');
   }
 
   function injecterCommunes() {
@@ -205,13 +288,35 @@
     if (form && url) form.setAttribute("action", url);  // secours si le JS d'envoi échoue
   }
 
+  // Carte Google Maps : construite à partir de l'adresse, sans clé d'API
+  function injecterCarte() {
+    var cadre = el("carte-google");
+    var lien = el("lien-google-maps");
+    var adresse = val("entreprise.adresse");
+    if (!adresse) return;
+    adresse += ", " + val("entreprise.codePostal") + " " + val("entreprise.ville");
+
+    if (cadre) {
+      var src = "https://www.google.com/maps?q=" + encodeURIComponent(adresse) + "&z=13&output=embed";
+      if (cadre.getAttribute("src") !== src) cadre.setAttribute("src", src);
+      cadre.setAttribute("title", "Localisation de " + val("entreprise.nom") + " à " + val("entreprise.ville"));
+    }
+    if (lien) {
+      lien.setAttribute("href", val("entreprise.lienGoogleMaps") ||
+        "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(adresse));
+    }
+  }
+
   function injecterPied() {
     var m = el("mentions-legales");
     if (m) {
       var parts = [
         val("legal.formeJuridique"),
+        val("legal.dirigeant") ? "Responsable de la publication : " + val("legal.dirigeant") : "",
+        val("entreprise.adresse") ? val("entreprise.adresse") + ", " + val("entreprise.codePostal") + " " + val("entreprise.ville") : "",
         val("legal.siret") ? "SIRET " + val("legal.siret") : "",
-        val("legal.tva") ? "TVA " + val("legal.tva") : "",
+        val("legal.siren") ? "SIREN " + val("legal.siren") : "",
+        val("legal.tva") ? "TVA intracommunautaire " + val("legal.tva") : "",
         val("legal.assurance") ? "Assurance : " + val("legal.assurance") : "",
         val("legal.hebergeur") ? "Hébergeur : " + val("legal.hebergeur") : ""
       ].filter(Boolean);
@@ -253,6 +358,10 @@
       "@context": "https://schema.org",
       "@type": "HomeAndConstructionBusiness",
       "name": val("entreprise.nom"),
+      "legalName": val("legal.formeJuridique"),
+      "founder": val("legal.dirigeant") ? { "@type": "Person", "name": val("legal.dirigeant") } : "",
+      "taxID": val("legal.siret"),
+      "vatID": val("legal.tva"),
       "description": val("seo.description"),
       "url": val("seo.url"),
       "image": urlImage(val("hero.image"), 1200, 750),
@@ -287,9 +396,9 @@
       },
       "openingHoursSpecification": [{
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "18:00"
+        "dayOfWeek": val("entreprise.horairesGoogle.jours", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]),
+        "opens": val("entreprise.horairesGoogle.ouverture", "08:00"),
+        "closes": val("entreprise.horairesGoogle.fermeture", "18:00")
       }],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -302,6 +411,13 @@
         })
       }
     };
+
+    // On retire les champs vides ou pas encore renseignés : mieux vaut une
+    // fiche Google incomplète qu'une fiche contenant « [À COMPLÉTER] ».
+    Object.keys(donnees).forEach(function (k) {
+      var v = donnees[k];
+      if (v === "" || (typeof v === "string" && v.indexOf("[À COMPLÉTER]") === 0)) delete donnees[k];
+    });
 
     var script = document.createElement("script");
     script.type = "application/ld+json";
@@ -467,7 +583,9 @@
           form.reset();
         })
         .catch(function () {
-          message(erreur, val("formulaire.messageErreur") + " " + val("entreprise.telephone"));
+          var numero = val("entreprise.telephone");
+          message(erreur, /\d/.test(numero) ? val("formulaire.messageErreur") + " " + numero
+                                            : "L'envoi a échoué. Merci de réessayer dans un instant.");
         })
         .then(function () {
           bouton.disabled = false;
@@ -485,8 +603,10 @@
   injecterServices();
   injecterRealisations();
   injecterAvis();
+  injecterNoteAvis();
   injecterCommunes();
   injecterFormulaire();
+  injecterCarte();
   injecterPied();
   injecterSeo();
   injecterJsonLd();
