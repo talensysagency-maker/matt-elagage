@@ -19,7 +19,7 @@ window.CONFIG = {
     nom: "MATT ELAGAGE",
     metier: "Élagage & entretien de jardins",
     telephone: "06 75 75 60 57",         // le lien d'appel (+33…) est calculé automatiquement
-    email: "[À COMPLÉTER]",              // ex. "contact@matt-elagage.fr"
+    email: "mattelagage56@gmail.com",
     adresse: "3 Pont Christ",
     codePostal: "56400",
     ville: "Brech",

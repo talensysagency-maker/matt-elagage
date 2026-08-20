@@ -222,6 +222,10 @@ p  { margin: 0 0 1em; }
 }
 .logo:hover { color: var(--vert-clair); }
 .logo .icone { width: 1.7rem; height: 1.7rem; color: var(--vert-clair); }
+
+/* Marque de l'entreprise (images/logo-marque.png), fond transparent.
+   Pour un autre client : remplacez le fichier, la hauteur s'adapte. */
+.logo__marque { height: 2.3rem; width: auto; flex: none; }
 .logo__texte { display: flex; flex-direction: column; }
 .logo__sous {
   font-family: var(--police-texte);
