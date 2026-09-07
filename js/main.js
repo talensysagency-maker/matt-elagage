@@ -103,6 +103,46 @@
   }
 
 
+  // Fond vidéo du bandeau (facultatif). La photo reste dessous et s'affiche
+  // tout de suite : la vidéo ne fait que se superposer une fois prête.
+  function injecterVideoHero() {
+    var url = val("hero.video");
+    var media = document.querySelector(".hero__media");
+    if (!url || !media) return;
+
+    // On respecte le réglage « animations réduites » du téléphone…
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // …et on épargne le forfait mobile des visiteurs en économie de données.
+    var reseau = navigator.connection;
+    if (reseau && (reseau.saveData || /(^|-)2g$/.test(reseau.effectiveType || ""))) return;
+
+    var video = document.createElement("video");
+    video.className = "hero__video";
+    video.muted = true;          // obligatoire pour que les mobiles acceptent la lecture auto
+    video.loop = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.preload = "auto";
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("aria-hidden", "true");
+    video.setAttribute("tabindex", "-1");
+
+    // Si quoi que ce soit échoue (fichier absent, format refusé, lecture auto
+    // bloquée), on retire la vidéo et la photo reprend sa place.
+    function abandonner() { if (video.parentNode) video.parentNode.removeChild(video); }
+    video.addEventListener("error", abandonner);
+    video.addEventListener("canplay", function () { video.classList.add("pret"); });
+
+    video.src = url;
+    media.appendChild(video);
+
+    var lecture = video.play();
+    if (lecture && lecture.catch) lecture.catch(abandonner);
+  }
+
+
   /* ------------------------------------------------- 3. blocs répétitifs */
 
   function injecterReassurance() {
@@ -599,6 +639,7 @@
 
   injecterTextes();
   injecterHero();
+  injecterVideoHero();
   injecterReassurance();
   injecterServices();
   injecterRealisations();

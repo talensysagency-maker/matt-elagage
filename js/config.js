@@ -60,6 +60,13 @@ window.CONFIG = {
     sousTitre: "Élagage, abattage, tonte, taille de haies et création de jardin — à Brech, Auray et dans les communes alentour.",
     image: "https://images.unsplash.com/photo-1754321902809-5c21cbc67228",
     imageAlt: "Élagueur en cordes taillant les branches d'un grand arbre",
+
+    // FOND VIDÉO (facultatif) — laissez "" pour garder la photo seule.
+    // Déposez un MP4 dans images/ et écrivez ici "images/hero.mp4".
+    // La photo ci-dessus reste affichée pendant le chargement, et sert de
+    // secours sur les téléphones en mode économie de données.
+    // Format conseillé : 1280x720, 10 à 15 s, sans son, moins de 5 Mo.
+    video: "",
     boutonAppel: "Appeler maintenant",
     boutonDevis: "Demander un devis"
   },
